@@ -39,7 +39,6 @@ export const XAXIS_DATA = [
   "02:50",
   "02:55"
 ];
-
 export const YAXIS_DATA: number[] = [];
 
 for (let i = 0; i <= XAXIS_DATA.length; i++) {

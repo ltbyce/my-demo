@@ -14,7 +14,6 @@ import {
 } from "echarts/components";
 import { BarChart, BarSeriesOption } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
-import { XAXIS_DATA, YAXIS_DATA } from "./config";
 import { EchartsGroupContext, EventParams, InitialValue } from "../../context/index";
 
 // register echart component
@@ -24,7 +23,19 @@ type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
 >;
 
-export const HandStandBar = memo(() => {
+interface Props {
+  /**
+   *  x轴data
+   */
+  xdata: (number | string)[],
+  /**
+   * y轴data
+   */
+  ydata: (number | string)[],
+}
+
+export const HandStandBar = memo((props: Props) => {
+  const { xdata, ydata } = props
   const echartRef = useRef<any>();
   const { dataIndex, dispatch } = useContext<InitialValue>(EchartsGroupContext);
   const option: EChartsOption = {
@@ -36,8 +47,7 @@ export const HandStandBar = memo(() => {
       type: "category",
       // position: "top",
       boundaryGap: false,
-      // prettier-ignore
-      data: XAXIS_DATA
+      data: xdata
     },
     yAxis: {
       type: "value",
@@ -46,7 +56,7 @@ export const HandStandBar = memo(() => {
     },
     series: [
       {
-        data: YAXIS_DATA,
+        data: ydata,
         type: "bar",
         showBackground: true,
         backgroundStyle: {
@@ -57,12 +67,14 @@ export const HandStandBar = memo(() => {
   };
 
   const handleMouseMove = useCallback((params: EventParams) => {
-    dispatch!({
-      type: "update",
-      payload: {
-        dataIndex: params.dataIndex
-      }
-    });
+    if (typeof dispatch === 'function') {
+      dispatch!({
+        type: "update",
+        payload: {
+          dataIndex: params.dataIndex
+        }
+      });
+    }
   }, [dispatch]);
   const onEvents = {
     mousemove: handleMouseMove
