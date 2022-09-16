@@ -26,7 +26,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "lint-staged": "lint-staged",
+    "lint:fix": "yarn run eslint --fix src"
   },
   "eslintConfig": {
     "extends": [
@@ -42,6 +44,13 @@
           "import/no-anonymous-default-export": "off"
         }
       }
+    ]
+  },
+  "lint-staged": {
+    "**/*.less": "stylelint --syntax less",
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write"
     ]
   },
   "browserslist": {
@@ -69,6 +78,9 @@
     "@storybook/testing-library": "0.0.13",
     "@types/mockjs": "^1.0.6",
     "babel-plugin-named-exports-order": "0.0.2",
+    "eslint": "^8.23.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
     "webpack": "^5.74.0"
   }
